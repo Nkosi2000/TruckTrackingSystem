@@ -1,0 +1,168 @@
+<div class="bay-tracker-container" [class.dark-mode]="isDarkMode">
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">🚚</span>
+                <span>TruckTracker</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Dashboard</a></li>
+                    <li><a href="#">Analytics</a></li>
+                    <li><a href="#">History</a></li>
+                    <li><a href="#">Settings</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-container">
+            <h1>Truck Loading Operations</h1>
+            <p>Real-time monitoring of loading bays with live updates for your entire team</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-value">{{ NUM_BAYS }}</div>
+                    <div class="stat-label">Loading Bays</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ getActiveBaysCount() }}</div>
+                    <div class="stat-label">Active Now</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">{{ getCompletedTodayCount() }}</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <div class="topbar">
+            <div>
+                <h2>Loading Bays 1 to {{ NUM_BAYS }}</h2>
+                <div class="small">Live shared view. Data persists and updates for everyone.</div>
+            </div>
+            <div class="controls">
+                <button class="theme-toggle" (click)="toggleDarkMode()" title="Toggle dark mode">
+                    <span class="moon-icon">🌙</span>
+                    <span class="sun-icon">☀️</span>
+                </button>
+                
+                <div class="badge">Live</div>
+                <button class="clear-all" (click)="resetAllBays()" title="Clear all bays (will remove data for all viewers)">
+                    Clear all
+                </button>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card" *ngFor="let bay of getBaysArray(); trackBy: trackByBayId">
+                <div class="bay-header">
+                    <div>
+                        <div class="bay-title">Bay {{ getBayNumber(bay.id) }}</div>
+                        <div class="meta">Live bay — {{ bay.id }}</div>
+                    </div>
+                    <div class="status-pill" [ngClass]="bay.statusClass">
+                        {{ bay.status }}
+                    </div>
+                </div>
+
+                <div>
+                    <div class="small">Truck: <span class="truck-val">{{ bay.truck || '—' }}</span></div>
+                    <div class="small">Start: <span>{{ formatStartTime(bay.startedAt) }}</span></div>
+                    <div class="elapsed">{{ bay.elapsedTime || '—' }}</div>
+
+                    <div class="truck-input">
+                        <input 
+                            type="text" 
+                            [placeholder]="getInputPlaceholder(bay.status)"
+                            [(ngModel)]="truckInputs[bay.id]"
+                            (keyup.enter)="startLoading(bay.id)"
+                            [disabled]="bay.startedAt > 0"
+                        />
+                        <button 
+                            (click)="startLoading(bay.id)"
+                            [disabled]="!truckInputs[bay.id]?.trim() || bay.startedAt > 0"
+                        >
+                            {{ bay.startedAt > 0 ? 'Loading...' : 'Start' }}
+                        </button>
+                        <button 
+                            class="secondary" 
+                            (click)="resetBay(bay.id)"
+                            [disabled]="!bay.startedAt"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h3>Operation Guidelines</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h4>Starting a Load</h4>
+                    <p>Enter the truck number and click "Start" to begin tracking loading time for a bay.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Resetting a Bay</h4>
+                    <p>Use the "Reset" button to clear a bay when loading is complete or to cancel an operation.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Live Updates</h4>
+                    <p>All changes are synchronized in real-time across all connected devices.</p>
+                </div>
+                <div class="info-card">
+                    <h4>Data Persistence</h4>
+                    <p>Bay status and timing data is preserved even after refreshing the page.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h4>TruckTracker</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Services</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">System Status</a></li>
+                    <li><a href="#">Documentation</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact</h4>
+                <ul>
+                    <li>123 Logistics Way</li>
+                    <li>Shipping City, SC 12345</li>
+                    <li>info@trucktracker.com</li>
+                    <li>(555) 123-4567</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{ currentYear }} TruckTracker. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
