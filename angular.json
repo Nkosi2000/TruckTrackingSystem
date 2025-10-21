@@ -13,6 +13,8 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "outputPath": "dist/TrackerSystem/browser",
+            "baseHref": "/",
             "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
@@ -30,6 +32,8 @@
           },
           "configurations": {
             "production": {
+              "outputPath": "dist/TrackerSystem/browser",
+              "baseHref": "/",
               "budgets": [
                 {
                   "type": "initial",
