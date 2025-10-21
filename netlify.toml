@@ -1,5 +1,5 @@
 [build]
-  publish = "dist/TrackerSystem/browser/browser"
+  publish = "dist/TrackerSystem/browser"
   command = "npm run build -- --configuration production"
 
 [[redirects]]

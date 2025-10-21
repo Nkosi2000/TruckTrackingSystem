@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "outputPath": "dist",
+            "outputPath": "dist/TrackerSystem",
             "baseHref": "/",
             "browser": "src/main.ts",
             "polyfills": [
@@ -32,7 +32,7 @@
           },
           "configurations": {
             "production": {
-              "outputPath": "dist",
+              "outputPath": "dist/TrackerSystem",
               "baseHref": "/",
               "budgets": [
                 {
