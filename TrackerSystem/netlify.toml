@@ -1,6 +1,6 @@
 [build]
   publish = "dist/TrackerSystem"
-  command = "ng build --configuration production"
+  npm run build -- --configuration production
 
 [[redirects]]
   from = "/*"
