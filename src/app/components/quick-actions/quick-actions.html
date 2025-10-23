@@ -1,0 +1,27 @@
+<div class="quick-actions">
+    <div class="actions-header">
+        <h3>Quick Actions</h3>
+    </div>
+    <div class="actions-grid">
+        <button class="action-card" (click)="onRecentTimesToggle()">
+            <span class="action-icon">🕒</span>
+            <span class="action-title">Recent Times</span>
+            <span class="action-desc">View latest clocked times</span>
+        </button>
+        <button class="action-card" (click)="onCollectionStatusToggle()">
+            <span class="action-icon">📊</span>
+            <span class="action-title">Database Status</span>
+            <span class="action-desc">Check system health</span>
+        </button>
+        <button class="action-card" (click)="onAdvancedReportsToggle()">
+            <span class="action-icon">📈</span>
+            <span class="action-title">Advanced Reports</span>
+            <span class="action-desc">Generate custom reports</span>
+        </button>
+        <button class="action-card" (click)="onExportStatus()">
+            <span class="action-icon">💾</span>
+            <span class="action-title">Export Status</span>
+            <span class="action-desc">Current bay status to Excel</span>
+        </button>
+    </div>
+</div>

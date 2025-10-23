@@ -9,14 +9,7 @@ import {
   push
 } from '@angular/fire/database';
 import { BehaviorSubject } from 'rxjs';
-import { ClockedTime } from '../models/bay-data';
-
-export interface Bay {
-  id: string;
-  truck: string;
-  startedAt: number;
-  clockedTimes?: ClockedTime[];
-}
+import { Bay, ClockedTime, DisplayBay } from '../models/bay-data';
 
 @Injectable({
   providedIn: 'root'
@@ -35,42 +28,116 @@ export class BayService {
   public bays$ = this.baysSubject.asObservable();
 
   constructor() {
+    console.log('🚚 BayService: Constructor called');
+    console.log('🚚 BayService: Database instance:', this.db);
     this.initializeBays();
   }
 
   private initializeBays(): void {
-    // Run the entire initialization inside ngZone
+    console.log('🚚 BayService: initializeBays called');
     this.ngZone.run(() => {
+      console.log(`🚚 BayService: Setting up ${this.NUM_BAYS} bay listeners`);
       for (let i = 1; i <= this.NUM_BAYS; i++) {
         const bayId = `bay${i}`;
         const bayRef = ref(this.db, `${this.DB_ROOT}/${bayId}`);
+
+        console.log(`🚚 BayService: Creating listener for ${bayId} at path: ${this.DB_ROOT}/${bayId}`);
           
         onValue(bayRef, (snapshot) => {
-          // Ensure this runs in Angular zone for change detection
           this.ngZone.run(() => {
             const data = snapshot.val();
+            console.log(`🚚 BayService: ${bayId} snapshot received:`, data);
             const currentBays = this.baysSubject.value;
               
             if (data) {
+              console.log(`🚚 BayService: Updating ${bayId} with data`);
               this.baysSubject.next({
                 ...currentBays,
                 [bayId]: data
               });
             } else {
+              console.log(`🚚 BayService: ${bayId} has no data, removing from state`);
               const { [bayId]: removed, ...remaining } = currentBays;
               this.baysSubject.next(remaining);
             }
+
+            console.log('🚚 BayService: Current bays state:', this.baysSubject.value);
           });
         }, (error) => {
           this.ngZone.run(() => {
-            console.error(`Error listening to bay ${bayId}:`, error);
+            console.error(`🚚 BayService: Error listening to bay ${bayId}:`, error);
           });
+        }, {
+
+          onlyOnce: false
         });
       }
     });
   }
 
+    // Method to manually test Firebase connection
+  async testFirebaseConnection(): Promise<boolean> {
+    try {
+      console.log('🚚 BayService: Testing Firebase connection...');
+      
+      // Test writing a small piece of data
+      const testRef = ref(this.db, 'test-connection');
+      await set(testRef, { test: true, timestamp: Date.now() });
+      console.log('🚚 BayService: Firebase write test successful');
+      
+      // Test reading it back
+      return new Promise((resolve) => {
+        onValue(testRef, (snapshot) => {
+          const data = snapshot.val();
+          console.log('🚚 BayService: Firebase read test successful:', data);
+          resolve(true);
+        }, (error) => {
+          console.error('🚚 BayService: Firebase read test failed:', error);
+          resolve(false);
+        }, { onlyOnce: true });
+      });
+    } catch (error) {
+      console.error('🚚 BayService: Firebase connection test failed:', error);
+      return false;
+    }
+  }
+
+  // Add a method to get current state for debugging
+  getCurrentState() {
+    return {
+      bays: this.baysSubject.value,
+      numBays: this.NUM_BAYS,
+      dbRoot: this.DB_ROOT
+    };
+  }
+
+  // Helper method to create DisplayBay from Bay
+  createDisplayBay(bay: Bay): DisplayBay {
+    console.log('🚚 BayService: Creating display bay from:', bay);
+    const statusInfo = this.getStatus(bay.startedAt);
+    return {
+      ...bay,
+      elapsedTime: this.calculateElapsedTime(bay.startedAt),
+      status: statusInfo.status,
+      statusClass: statusInfo.class
+    };
+  }
+
+  // Helper method to create default DisplayBay
+  createDefaultDisplayBay(bayId: string): DisplayBay {
+    console.log('🚚 BayService: Creating default display bay for:', bayId);
+    return {
+      id: bayId,
+      truck: '',
+      startedAt: 0,
+      elapsedTime: '00:00:00',
+      status: 'Available',
+      statusClass: 'empty'
+    };
+  }
+
   async startLoading(bayId: string, truckNo: string): Promise<void> {
+    console.log(`🚚 BayService: Starting loading for ${bayId} with truck ${truckNo}`);
     return this.ngZone.run(() => {
       const payload: Bay = {
         id: bayId,
@@ -79,6 +146,7 @@ export class BayService {
       };
       
       const bayRef = ref(this.db, `${this.DB_ROOT}/${bayId}`);
+      console.log(`🚚 BayService: Writing to ${this.DB_ROOT}/${bayId}:`, payload);
       return set(bayRef, payload);
     });
   }
@@ -100,7 +168,6 @@ export class BayService {
     });
   }
 
-  // Clock time - writes to separate collection with proper zone handling
   async clockTime(bayId: string): Promise<string> {
     return this.ngZone.run(async () => {
       try {
@@ -123,7 +190,6 @@ export class BayService {
           date: new Date().toISOString().split('T')[0]
         };
 
-        // Write to separate collection
         const clockedTimeRef = push(ref(this.db, this.CLOCKED_TIMES_ROOT));
         const clockedTimeId = clockedTimeRef.key;
         
@@ -133,7 +199,7 @@ export class BayService {
 
         await set(clockedTimeRef, clockedTime);
 
-        // Also update the bay with the clocked time for quick access in UI
+        // Update the bay with the clocked time for quick access in UI
         const existingClockedTimes = bay.clockedTimes || [];
         const updatedClockedTimes = [...existingClockedTimes, {
           ...clockedTime,
@@ -154,21 +220,6 @@ export class BayService {
     });
   }
 
-  // Helper method to update clocked times in bay node
-  private async updateBayClockedTimes(bayId: string, clockedTime: ClockedTime): Promise<void> {
-    return this.ngZone.run(async () => {
-      const bay = this.baysSubject.value[bayId];
-      const existingClockedTimes = bay?.clockedTimes || [];
-      const updatedClockedTimes = [...existingClockedTimes, clockedTime];
-
-      const bayRef = ref(this.db, `${this.DB_ROOT}/${bayId}`);
-      await update(bayRef, {
-        clockedTimes: updatedClockedTimes
-      });
-    });
-  }
-
-  // Get all clocked times from the separate collection with proper zone handling
   getAllClockedTimes(): Promise<ClockedTime[]> {
     return new Promise((resolve, reject) => {
       this.ngZone.run(() => {
@@ -200,7 +251,6 @@ export class BayService {
     });
   }
 
-  // Get clocked times for a specific bay from the separate collection
   getClockedTimesByBay(bayId: string): Promise<ClockedTime[]> {
     return new Promise((resolve, reject) => {
       this.ngZone.run(() => {
@@ -235,7 +285,6 @@ export class BayService {
     });
   }
 
-  // Get clocked times by date range
   getClockedTimesByDateRange(startDate: string, endDate: string): Promise<ClockedTime[]> {
     return new Promise((resolve, reject) => {
       this.ngZone.run(() => {
@@ -273,7 +322,6 @@ export class BayService {
     });
   }
 
-  // Get clocked times by truck number
   getClockedTimesByTruck(truckNumber: string): Promise<ClockedTime[]> {
     return new Promise((resolve, reject) => {
       this.ngZone.run(() => {
@@ -308,7 +356,6 @@ export class BayService {
     });
   }
 
-  // Delete a specific clocked time
   async deleteClockedTime(clockedTimeId: string): Promise<void> {
     return this.ngZone.run(async () => {
       try {
@@ -321,7 +368,6 @@ export class BayService {
     });
   }
 
-  // Get statistics for reporting
   async getClockedTimeStats(): Promise<{
     totalClockedTimes: number;
     averageTime: string;
@@ -368,7 +414,6 @@ export class BayService {
         return stats;
       } catch (error) {
         console.error('Error getting clocked time stats:', error);
-        // Return empty stats instead of throwing
         return {
           totalClockedTimes: 0,
           averageTime: '00:00:00',
@@ -407,7 +452,7 @@ export class BayService {
     } else if (startedAt) {
       return { status: 'On Track', class: 'status-on' };
     } else {
-      return { status: 'Empty', class: 'bay-empty' };
+      return { status: 'Available', class: 'empty' };
     }
   }
 
@@ -419,7 +464,6 @@ export class BayService {
     return [h, m, s].map(n => String(n).padStart(2, '0')).join(':');
   }
 
-  // New method: Clear all clocked times from the collection (for admin purposes)
   async clearAllClockedTimes(): Promise<void> {
     return this.ngZone.run(async () => {
       try {
@@ -433,7 +477,6 @@ export class BayService {
     });
   }
 
-  // New method: Get clocked times count (for quick stats)
   async getClockedTimesCount(): Promise<number> {
     return this.ngZone.run(async () => {
       try {
@@ -446,7 +489,6 @@ export class BayService {
     });
   }
 
-  // New method: Get recent clocked times (last N entries)
   async getRecentClockedTimes(limit: number = 10): Promise<ClockedTime[]> {
     return this.ngZone.run(async () => {
       try {
@@ -461,7 +503,6 @@ export class BayService {
     });
   }
 
-  // New method: Check if collection is accessible
   async isCollectionAccessible(): Promise<boolean> {
     return this.ngZone.run(async () => {
       try {

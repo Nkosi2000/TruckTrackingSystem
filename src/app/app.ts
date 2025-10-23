@@ -6,7 +6,7 @@ import { BayTracker } from './components/bay-tracker/bay-tracker';
   standalone: true,
   imports: [BayTracker],
   template: `<app-bay-tracker></app-bay-tracker>`,
-  // styleUrl: './app.css'
+  styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('TrackerSystem');

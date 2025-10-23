@@ -1,19 +1,23 @@
-export interface BayData {
+export interface Bay {
   id: string;
-  truck?: string;
-  startedAt?: number;
-  elapsedTime?: string;
-  status?: 'empty' | 'on-track' | 'warning' | 'overtime';
+  truck: string;
+  startedAt: number;
   clockedTimes?: ClockedTime[];
+}
+
+export interface DisplayBay extends Bay {
+  elapsedTime: string;
+  status: string;
+  statusClass: string;
 }
 
 export interface ClockedTime {
   id: string;
-  elapsedTime: string; // Format: "HH:MM:SS"
-  clockedAt: number; // Timestamp
+  elapsedTime: string;
+  clockedAt: number;
   truckNumber: string;
   bayId: string;
   bayNumber: string;
-  totalSeconds: number; // For easy sorting/calculation
-  date: string; // Format: "YYYY-MM-DD" for easy querying
+  totalSeconds: number;
+  date: string;
 }

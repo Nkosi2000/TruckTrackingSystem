@@ -1,0 +1,166 @@
+<div class="main-container">
+    <div class="topbar">
+        <div class="topbar-left">
+            <h2>Loading Bays 1 to {{ numBays() }}</h2>
+            <div class="small">Live shared view. Data persists and updates for everyone.</div>
+        </div>
+        <div class="controls">
+            <button class="theme-toggle" (click)="onThemeToggle()" title="Toggle dark mode">
+                <span class="moon-icon">🌙</span>
+                <span class="sun-icon">☀️</span>
+            </button>
+            
+            <div class="badge">Live</div>
+            
+            <!-- Loading Indicator -->
+            <div class="loading-indicator" *ngIf="isLoading()">
+                <div class="spinner"></div>
+                <span>Processing...</span>
+            </div>
+            
+            <!-- Reporting Controls -->
+            <div class="reporting-controls">
+                <button class="report-btn" (click)="onStatsRequest()" title="View clocked time statistics">
+                    📊 Stats
+                </button>
+                <button class="report-btn" (click)="onExportData()" title="Export all clocked time data to Excel">
+                    📊 Export Data
+                </button>
+                <button class="report-btn" (click)="onExportStatus()" title="Export current bay status to Excel">
+                    📋 Export Status
+                </button>
+            </div>
+            
+            <button class="clear-all" (click)="onResetAllBays()" title="Clear all bays (will remove data for all viewers)">
+                Clear all
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Display -->
+    <div class="stats-display" *ngIf="showStats()" [class.active]="showStats()">
+        <div class="stats-header">
+            <h3>Clocked Time Statistics</h3>
+            <button class="close-stats" (click)="onStatsClose()">×</button>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-value">{{ statsData()?.totalClockedTimes || 0 }}</div>
+                <div class="stat-card-label">Total Clocked Times</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-value">{{ statsData()?.averageTime || '00:00:00' }}</div>
+                <div class="stat-card-label">Average Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-value">{{ activeBaysCount() }}</div>
+                <div class="stat-card-label">Active Bays</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-value">{{ completedTodayCount() }}</div>
+                <div class="stat-card-label">Completed Today</div>
+            </div>
+        </div>
+        
+        <!-- Detailed Stats - FIXED: Remove Object.keys usage -->
+        <div class="detailed-stats" *ngIf="statsData()?.byBay && hasBayStats()">
+            <h4>Breakdown by Bay</h4>
+            <div class="breakdown-grid">
+                <div class="breakdown-item" *ngFor="let bay of bayOptions()">
+                    <span class="breakdown-label">{{ bay.label }}</span>
+                    <span class="breakdown-value">{{ getBayStatCount(bay.value) }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Bay Cards Grid -->
+    <div class="grid">
+        <div class="card" *ngFor="let bay of bays(); trackBy: trackByBayId">
+            <div class="bay-header">
+                <div>
+                    <div class="bay-title">Bay {{ getBayNumber(bay.id) }}</div>
+                    <div class="meta">Live bay — {{ bay.id }}</div>
+                </div>
+                <div class="status-pill" [ngClass]="bay.statusClass" [style.background]="getStatusColor(bay.statusClass)">
+                    {{ bay.status }}
+                </div>
+            </div>
+
+            <div class="card-content">
+                <div class="card-details">
+                    <div class="detail-row">
+                        <span class="detail-label">Truck:</span>
+                        <span class="detail-value truck-val">{{ bay.truck || '—' }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Start Time:</span>
+                        <span class="detail-value">{{ formatStartTime(bay.startedAt) }}</span>
+                    </div>
+                    <div class="elapsed-time-display">
+                        {{ bay.elapsedTime || '00:00:00' }}
+                    </div>
+
+                    <!-- Clock in Time Button - Only show when bay is active -->
+                    <div class="clock-in-section" *ngIf="bay.startedAt > 0">
+                        <button 
+                            class="clock-in-btn"
+                            (click)="onClockTime(bay.id)"
+                            [disabled]="isLoading()"
+                            title="Record current elapsed time"
+                        >
+                            ⏱️ Clock in Time
+                        </button>
+                    </div>
+
+                    <!-- Clocked Times History -->
+                    <div class="clocked-times" *ngIf="hasClockedTimes(bay.id)">
+                        <div class="clocked-times-header">
+                            <h4>Clocked Times</h4>
+                            <span class="badge">{{ getClockedTimes(bay.id).length }}</span>
+                        </div>
+                        <div class="clocked-times-list">
+                            <div 
+                                class="clocked-time-item" 
+                                *ngFor="let clockedTime of getClockedTimes(bay.id)"
+                            >
+                                <div class="clocked-time-value">
+                                    {{ clockedTime.elapsedTime }}
+                                </div>
+                                <div class="clocked-time-meta">
+                                    {{ formatClockedTime(clockedTime.clockedAt) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="truck-input">
+                    <input 
+                        type="text" 
+                        [placeholder]="getInputPlaceholder(bay.status)"
+                        [(ngModel)]="truckInputs[bay.id]"
+                        (keyup.enter)="startLoading(bay.id)"
+                        [disabled]="bay.startedAt > 0 || isLoading()"
+                    />
+                    <div class="button-group">
+                        <button 
+                            class="primary-btn"
+                            (click)="startLoading(bay.id)"
+                            [disabled]="!truckInputs[bay.id]?.trim() || bay.startedAt > 0 || isLoading()"
+                        >
+                            {{ bay.startedAt > 0 ? 'Loading...' : 'Start' }}
+                        </button>
+                        <button 
+                            class="secondary-btn" 
+                            (click)="resetBay(bay.id)"
+                            [disabled]="!bay.startedAt || isLoading()"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

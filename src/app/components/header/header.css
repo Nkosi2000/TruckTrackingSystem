@@ -1,0 +1,804 @@
+/* ===== JOST FONT IMPORT ===== */
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
+
+/* ===== CORPORATE MODERN RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* ===== COMPACT CORPORATE HEADER ===== */
+header {
+    background: #000000;
+    color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+    border-bottom: 3px solid #e8c100;
+    box-shadow: 0 4px 30px rgba(232, 193, 0, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* ===== FULL WIDTH HEADER CONTAINER ===== */
+.header-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    position: relative;
+}
+
+/* ===== COMPACT LOGO SECTION - ALWAYS LEFT ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    padding: 0.3rem 1rem;
+    flex-shrink: 0;
+    margin-right: auto;
+}
+
+.logo-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+/* EQUALLY SPACED VERTICAL DIVIDER between icon and text - PUSHED TO THE RIGHT */
+.logo::after {
+    content: '';
+    position: absolute;
+    left: calc(35px + 2.8rem); /* Pushed further to the right */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 2.7px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        #e8c100 20%, 
+        #e8c100 80%, 
+        transparent 100%);
+    opacity: 0.9;
+}
+
+.logo-content {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    margin-left: 1rem; /* This creates equal spacing on both sides */
+    flex-shrink: 0;
+}
+
+.logo-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+
+.logo-subtitle {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ff0000;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-top: 1px;
+    white-space: nowrap;
+}
+
+/* ===== DESKTOP NAVIGATION - RIGHT ALIGNED ===== */
+.desktop-nav {
+    display: flex;
+    height: 100%;
+    background: transparent;
+    margin-left: auto;
+}
+
+.desktop-nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    gap: 0;
+}
+
+.desktop-nav li {
+    position: relative;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* PREMIUM VERTICAL DIVIDERS BETWEEN DESKTOP MENU ITEMS */
+.desktop-nav li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 50%;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        #e8c100 20%, 
+        #e8c100 80%, 
+        transparent 100%);
+    opacity: 0.7;
+}
+
+.desktop-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    white-space: nowrap;
+    min-width: max-content;
+}
+
+/* FULL-WIDTH hover background */
+.desktop-nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: rgba(232, 193, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.desktop-nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #e8c100, #ff0000);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 2px 10px rgba(232, 193, 0, 0.3);
+}
+
+.desktop-nav a:hover::before {
+    height: 100%;
+}
+
+.desktop-nav a:hover::after {
+    width: 100%;
+}
+
+.desktop-nav a:hover {
+    color: #e8c100;
+    transform: translateY(-1px);
+}
+
+/* Premium active state */
+.desktop-nav a.active {
+    color: #ffffff;
+    background: linear-gradient(90deg, rgba(232, 193, 0, 0.15) 0%, rgba(255, 0, 0, 0.1) 100%);
+    font-weight: 700;
+}
+
+.desktop-nav a.active::before {
+    height: 100%;
+    background: rgba(232, 193, 0, 0.05);
+}
+
+.desktop-nav a.active::after {
+    width: 100%;
+    background: linear-gradient(90deg, #e8c100, #ff0000);
+    height: 3px;
+    box-shadow: 0 2px 15px rgba(232, 193, 0, 0.4);
+}
+
+.desktop-nav a.active::before,
+.desktop-nav a.active::after {
+    animation: activePulse 2s infinite;
+}
+
+@keyframes activePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* ===== COMPACT LOGO SECTION - ALWAYS LEFT ===== */
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    position: relative;
+    padding: 0.3rem 1rem;
+    flex-shrink: 0;
+    margin-right: auto;
+}
+
+.logo-icon {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+/* EQUALLY SPACED VERTICAL DIVIDER between icon and text - PUSHED TO THE RIGHT */
+.logo::after {
+    content: '';
+    position: absolute;
+    left: calc(35px + 2.8rem); /* Pushed further to the right */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70%;
+    width: 2.7px;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        #e8c100 20%, 
+        #e8c100 80%, 
+        transparent 100%);
+    opacity: 0.9;
+}
+
+.logo-content {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    margin-left: 1rem; /* This creates equal spacing on both sides */
+    flex-shrink: 0;
+}
+
+.logo-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+}
+
+.logo-subtitle {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ff0000;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-top: 1px;
+    white-space: nowrap;
+}
+
+/* ===== MOBILE TOGGLE - RIGHT ALIGNED ===== */
+.mobile-menu-toggle {
+    display: none;
+    background: #000000;
+    border: 2px solid #e8c100;
+    color: #e8c100;
+    cursor: pointer;
+    padding: 0.7rem;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    width: 45px;
+    height: 45px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+    margin-left: 1rem;
+    flex-shrink: 0;
+}
+
+.mobile-menu-toggle::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(232, 193, 0, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.mobile-menu-toggle:hover::before {
+    left: 100%;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    margin: 2px 0;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+}
+
+.mobile-menu-toggle:hover {
+    background: #e8c100;
+    color: #000000;
+    transform: scale(1.05);
+    box-shadow: 0 5px 20px rgba(232, 193, 0, 0.4);
+}
+
+/* ===== MOBILE NAVIGATION ===== */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: #000000;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    border-top: 3px solid #e8c100;
+    flex-direction: column;
+    height: auto;
+    min-height: 250px;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    z-index: 999;
+    background: linear-gradient(135deg, #000000 0%, #0a0a0a 100%);
+    justify-content: flex-start;
+    align-items: center;
+    padding: 1.5rem 0;
+}
+
+.mobile-nav.active {
+    display: flex;
+}
+
+.mobile-nav ul {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    gap: 0;
+    justify-content: flex-start;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.mobile-nav li {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+/* PREMIUM HORIZONTAL DIVIDERS BETWEEN MOBILE MENU ITEMS - PUSHED TO THE RIGHT */
+.mobile-nav li:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 15%; /* Adjusted to push the divider more to the right */
+    width: 70%; /* Slightly narrower to maintain the right-aligned look */
+    height: 1.5px;
+    background: linear-gradient(to right, 
+        transparent 0%, 
+        #e8c100 20%, 
+        #e8c100 80%, 
+        transparent 100%);
+    opacity: 0.6;
+}
+
+.mobile-nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 1.2rem 1rem;
+    justify-content: center;
+    border: 0;
+    font-size: 1rem;
+    height: auto;
+    font-weight: 600;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: normal;
+    min-width: auto;
+    font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    background: rgba(232, 193, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.mobile-nav a:hover::before {
+    height: 100%;
+}
+
+.mobile-nav a:hover {
+    color: #e8c100;
+}
+
+.mobile-nav a.active {
+    background: transparent;
+    color: #e8c100;
+    position: relative;
+}
+
+.mobile-nav a.active::before {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: rgba(232, 193, 0, 0.1);
+}
+
+/* Active state indicator for mobile - also pushed to the right */
+.mobile-nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 30%; /* Adjusted to match the right-pushed divider */
+    width: 40%; /* Slightly narrower to maintain consistency */
+    height: 2px;
+    background: linear-gradient(to right, #e8c100, #ff0000);
+    box-shadow: 0 2px 8px rgba(232, 193, 0, 0.4);
+}
+
+/* Mobile nav container for scrollable menu */
+.mobile-nav-container {
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Custom scrollbar for mobile menu */
+.mobile-nav-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.mobile-nav-container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.mobile-nav-container::-webkit-scrollbar-thumb {
+    background: #e8c100;
+    border-radius: 10px;
+}
+
+.mobile-nav-container::-webkit-scrollbar-thumb:hover {
+    background: #c9a600;
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Large Desktop (1200px and above) */
+@media (min-width: 1200px) {
+    .header-container {
+        padding: 0 4rem;
+        max-width: 100%;
+    }
+    
+    .desktop-nav a {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .logo-title {
+        font-size: 1.4rem;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.85rem;
+    }
+}
+
+/* Standard Desktop (1025px - 1199px) */
+@media (min-width: 1025px) {
+    .header-container {
+        padding: 0 3rem;
+        max-width: 100%;
+    }
+    
+    .desktop-nav a {
+        padding: 1rem 1.75rem;
+    }
+}
+
+/* Tablet and Mobile (1024px and below) */
+@media (max-width: 1024px) {
+    .header-container {
+        padding: 0 2rem;
+        min-height: 55px;
+    }
+
+    .desktop-nav {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: flex;
+        width: 40px;
+        height: 40px;
+        padding: 0.6rem;
+    }
+
+    .mobile-nav {
+        top: 55px;
+        max-height: calc(100vh - 55px);
+    }
+
+    .logo {
+        padding: 0.3rem 0.8rem;
+    }
+    
+    .logo-icon {
+        width: 30px;
+        height: 30px;
+        margin-right: 0.8rem;
+    }
+    
+    /* EQUALLY SPACED DIVIDER for tablet - PUSHED TO THE RIGHT */
+    .logo::after {
+        left: calc(30px + 1rem); /* Pushed further to the right */
+        height: 60%;
+    }
+    
+    .logo-content {
+        margin-left: 0.8rem; /* Equal spacing on both sides */
+    }
+    
+    .logo-title {
+        font-size: 1.1rem;
+    }
+}
+
+/* Tablet (769px - 1024px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .header-container {
+        padding: 0 2.5rem;
+    }
+}
+
+/* Small Tablet (768px and below) */
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 1.5rem;
+        min-height: 50px;
+    }
+
+    .mobile-nav {
+        top: 50px;
+        max-height: calc(100vh - 50px);
+    }
+
+    .logo {
+        padding: 0.2rem 0.6rem;
+    }
+    
+    .logo-icon {
+        width: 28px;
+        height: 28px;
+        margin-right: 0.7rem;
+    }
+    
+    /* EQUALLY SPACED DIVIDER for small tablet - PUSHED TO THE RIGHT */
+    .logo::after {
+        left: calc(28px + 0.8rem); /* Pushed further to the right */
+        height: 55%;
+    }
+    
+    .logo-content {
+        margin-left: 0.7rem; /* Equal spacing on both sides */
+    }
+    
+    .logo-title {
+        font-size: 1rem;
+    }
+
+    .logo-subtitle {
+        font-size: 0.7rem;
+    }
+
+    .mobile-nav a {
+        padding: 1rem 0.8rem;
+        font-size: 0.95rem;
+    }
+}
+
+/* Mobile (480px and below) */
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 1rem;
+        min-height: 45px;
+    }
+
+    .mobile-nav {
+        top: 45px;
+        max-height: calc(100vh - 45px);
+        padding: 1rem 0;
+    }
+
+    .logo {
+        padding: 0.15rem 0.5rem;
+        border-left: 2px solid #e8c100;
+    }
+    
+    .logo-icon {
+        width: 25px;
+        height: 25px;
+        margin-right: 0.5rem;
+    }
+    
+    /* EQUALLY SPACED DIVIDER for mobile - PUSHED TO THE RIGHT */
+    .logo::after {
+        left: calc(25px + 0.6rem); /* Pushed further to the right */
+        height: 50%;
+    }
+    
+    .logo-content {
+        margin-left: 0.5rem; /* Equal spacing on both sides */
+    }
+    
+    .logo-title {
+        font-size: 0.95rem;
+        letter-spacing: 0.8px;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.65rem;
+        letter-spacing: 0.6px;
+    }
+
+    .mobile-nav a {
+        padding: 0.9rem 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .mobile-menu-toggle {
+        width: 38px;
+        height: 38px;
+        padding: 0.6rem;
+    }
+
+    .mobile-menu-toggle span {
+        width: 20px;
+        height: 2px;
+    }
+}
+
+/* Extra Large Screens (1600px and above) */
+@media (min-width: 1600px) {
+    .header-container {
+        padding: 0 6rem;
+    }
+    
+    .desktop-nav a {
+        padding: 1rem 2.5rem;
+        font-size: 1.1rem;
+    }
+    
+    .logo-title {
+        font-size: 1.5rem;
+    }
+    
+    .logo-subtitle {
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape mode specific styles for mobile */
+@media (max-width: 1024px) and (orientation: landscape) {
+    .mobile-nav-container {
+        max-height: 50vh;
+    }
+    
+    .mobile-nav li {
+        margin: 0.3rem 0;
+    }
+    
+    .mobile-nav a {
+        padding: 0.8rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Extra small devices in landscape */
+@media (max-height: 400px) and (orientation: landscape) {
+    .mobile-nav-container {
+        max-height: 45vh;
+    }
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+        animation: none !important;
+    }
+    
+    .mobile-menu-toggle::before {
+        display: none;
+    }
+}
+
+@media (prefers-contrast: high) {
+    header {
+        border-bottom: 3px solid #ffff00;
+    }
+    
+    .desktop-nav a.active,
+    .mobile-nav a.active {
+        background: #ffff00;
+        color: #000000;
+    }
+    
+    .mobile-menu-toggle {
+        border: 2px solid #ffff00;
+        color: #ffff00;
+    }
+    
+    .logo {
+        border-left: 3px solid #ffff00;
+    }
+}
+
+/* Focus states */
+.desktop-nav a:focus,
+.mobile-nav a:focus,
+.mobile-menu-toggle:focus,
+.logo:focus {
+    outline: 3px solid #e8c100;
+    outline-offset: 3px;
+}
+
+/* Font optimization */
+.logo-title,
+.logo-subtitle,
+.desktop-nav a,
+.mobile-nav a,
+.mobile-menu-toggle {
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

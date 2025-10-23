@@ -1,0 +1,110 @@
+<!-- Enhanced Reporting Section -->
+<div class="reporting-section">
+    <div class="reporting-header">
+        <h3>Data & Analytics</h3>
+        <p>Access detailed reports and export your loading operation data to Excel</p>
+    </div>
+    
+    <!-- Quick Reports -->
+    <div class="quick-reports">
+        <h4>Quick Export</h4>
+        <div class="quick-report-buttons">
+            <button class="quick-report-btn" *ngFor="let option of quickReportOptions()" 
+                    (click)="onQuickReport(option.days)">
+                <span class="report-icon">📅</span>
+                {{ option.label }}
+            </button>
+        </div>
+    </div>
+
+    <div class="reporting-actions">
+        <button class="action-btn primary" (click)="onStatsRequest()" [disabled]="isLoading()">
+            <span class="action-icon">📈</span>
+            <span class="action-text">View Statistics</span>
+        </button>
+        <button class="action-btn secondary" (click)="onExport()" [disabled]="isLoading()">
+            <span class="action-icon">📥</span>
+            <span class="action-text">Export All Data</span>
+        </button>
+        <button class="action-btn tertiary" (click)="onToggleAdvancedReports()">
+            <span class="action-icon">🔍</span>
+            <span class="action-text">{{ showAdvancedReports() ? 'Hide' : 'Show' }} Advanced Reports</span>
+        </button>
+    </div>
+    
+    <!-- Advanced Reports Section -->
+    <div class="advanced-reports" *ngIf="showAdvancedReports()">
+        <h4>Custom Report Generator</h4>
+        <div class="report-filters">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="dateFrom">From Date:</label>
+                    <input type="date" id="dateFrom" [(ngModel)]="localFilters.dateFrom">
+                </div>
+                <div class="filter-group">
+                    <label for="dateTo">To Date:</label>
+                    <input type="date" id="dateTo" [(ngModel)]="localFilters.dateTo">
+                </div>
+            </div>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label for="bayFilter">Bay:</label>
+                    <select id="bayFilter" [(ngModel)]="localFilters.bayId">
+                        <option value="">All Bays</option>
+                        <option *ngFor="let bay of getBayOptions()" [value]="bay.value">{{ bay.label }}</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="truckFilter">Truck Number:</label>
+                    <input type="text" id="truckFilter" [(ngModel)]="localFilters.truckNumber" 
+                           placeholder="Filter by truck...">
+                </div>
+            </div>
+            <div class="filter-actions">
+                <button class="filter-btn primary" (click)="onAdvancedReport()" [disabled]="isLoading()">
+                    🚀 Generate Excel Report
+                </button>
+                <button class="filter-btn secondary" (click)="onResetFilters()">
+                    🔄 Reset Filters
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Display -->
+    <div class="stats-display" *ngIf="showStats()" [class.active]="showStats()">
+        <div class="stats-header">
+            <h3>Clocked Time Statistics</h3>
+            <button class="close-stats" (click)="onToggleStats()">×</button>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-value">{{ statsData()?.totalClockedTimes || 0 }}</div>
+                <div class="stat-card-label">Total Clocked Times</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-value">{{ statsData()?.averageTime || '00:00:00' }}</div>
+                <div class="stat-card-label">Average Time</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-value">{{ statsData()?.activeBays || 0 }}</div>
+                <div class="stat-card-label">Active Bays</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-value">{{ statsData()?.completedToday || 0 }}</div>
+                <div class="stat-card-label">Completed Today</div>
+            </div>
+        </div>
+        
+        <!-- Detailed Stats -->
+        <div class="detailed-stats" *ngIf="statsData()?.byBay && Object.keys(statsData().byBay).length > 0">
+            <h4>Breakdown by Bay</h4>
+            <div class="breakdown-grid">
+                <div class="breakdown-item" *ngFor="let bay of getBayOptions()">
+                    <span class="breakdown-label">{{ bay.label }}</span>
+                    <span class="breakdown-value">{{ statsData().byBay[bay.value] || 0 }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

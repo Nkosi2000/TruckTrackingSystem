@@ -1,0 +1,43 @@
+<header>
+    <div class="header-container">
+        <!-- Left Section (Logo) -->
+        <div class="logo">
+            <img src="/trucklogo.png" alt="FTCT Bay Productivity" class="logo-icon">
+            <div class="logo-content">
+                <div class="logo-title">FTCT Bay</div>
+                <div class="logo-subtitle">Productivity</div>
+            </div>
+        </div>
+        
+        <!-- Desktop Navigation - Right Aligned -->
+        <nav class="desktop-nav">
+            <ul>
+                <li><a href="#" class="active" (click)="onNavLinkClick($event)">Dashboard</a></li>
+                <li><a href="#" (click)="onNavLinkClick($event)">Analytics</a></li>
+                <li><a href="#" (click)="onNavLinkClick($event)">History</a></li>
+                <li><a href="#" (click)="onNavLinkClick($event)">Settings</a></li>
+            </ul>
+        </nav>
+
+        <!-- Mobile Menu Toggle - Right Aligned -->
+        <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" 
+                [attr.aria-expanded]="isMobileMenuOpen()"
+                aria-label="Toggle navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav" [class.active]="isMobileMenuOpen()">
+        <div class="mobile-nav-container">
+            <ul>
+                <li><a href="#" class="active" (click)="onNavLinkClick($event)">Dashboard</a></li>
+                <li><a href="#" (click)="onNavLinkClick($event)">Analytics</a></li>
+                <li><a href="#" (click)="onNavLinkClick($event)">History</a></li>
+                <li><a href="#" (click)="onNavLinkClick($event)">Settings</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,20 @@
+<section class="hero">
+    <div class="hero-container">
+        <h1>Truck Loading Operations</h1>
+        <p>Real-time monitoring of loading bays with live updates for your entire team</p>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-value">{{ numBays() }}</div>
+                <div class="stat-label">Loading Bays</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">{{ activeBaysCount() }}</div>
+                <div class="stat-label">Active Now</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value">{{ completedTodayCount() }}</div>
+                <div class="stat-label">Completed Today</div>
+            </div>
+        </div>
+    </div>
+</section>
