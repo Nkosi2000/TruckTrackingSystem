@@ -5,7 +5,7 @@
         rgba(240, 242, 245, 0.95) 50%,
         rgba(255, 255, 255, 0.97) 100%);
     color: #2d3748;
-    padding: 4rem 2rem;
+    padding: 0 2rem 4rem 2rem; /* Removed top padding */
     position: relative;
     overflow: hidden;
     font-family: 'Jost', 'Helvetica Neue', Arial, sans-serif;
@@ -13,6 +13,7 @@
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    margin: 0; /* Ensure no margin */
 }
 
 .info-section::before {
@@ -36,11 +37,17 @@
 }
 
 /* ===== INFO HEADER ===== */
-.info-section h3 {
-    font-size: 2.5rem;
-    font-weight: 800;
+.info-header {
     text-align: center;
     margin-bottom: 3rem;
+    position: relative;
+    padding-top: 3rem; /* Added padding to header instead of container */
+}
+
+.info-header h3 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -49,7 +56,6 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: titleGlowLight 3s ease-in-out infinite alternate;
-    position: relative;
 }
 
 @keyframes titleGlowLight {
@@ -61,7 +67,7 @@
     }
 }
 
-.info-section h3::after {
+.info-header::after {
     content: '';
     position: absolute;
     bottom: -1rem;
@@ -78,13 +84,12 @@
 .info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2.5rem;
+    gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
 }
 
-/* ===== INFO CARDS ===== */
 .info-card {
     background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.95) 0%, 
@@ -93,6 +98,8 @@
     border: 1px solid rgba(232, 193, 0, 0.3);
     border-radius: 16px;
     padding: 2.5rem 2rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -102,11 +109,10 @@
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 4px 16px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.9);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    gap: 1rem;
 }
 
 .info-card::before {
@@ -153,9 +159,14 @@
     left: 100%;
 }
 
+.info-card:active {
+    transform: translateY(-4px);
+    transition: transform 0.1s ease;
+}
+
 /* ===== INFO CARD CONTENT ===== */
 .info-icon {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: 0.5rem;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
     transition: all 0.3s ease;
@@ -186,12 +197,11 @@
 }
 
 .info-card p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #4a5568;
-    line-height: 1.6;
+    line-height: 1.5;
     text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     transition: all 0.3s ease;
-    margin: 0;
 }
 
 .info-card:hover p {
@@ -199,7 +209,7 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-/* ===== INDIVIDUAL CARD VARIATIONS ===== */
+/* ===== INDIVIDUAL INFO CARD VARIATIONS ===== */
 
 /* Starting a Load Card */
 .info-card:nth-child(1):hover {
@@ -258,25 +268,24 @@
 /* Large Desktop (1200px and above) */
 @media (min-width: 1200px) {
     .info-section {
-        padding: 5rem 4rem;
+        padding: 0 4rem 5rem 4rem; /* Removed top padding */
     }
     
-    .info-section h3 {
+    .info-header h3 {
         font-size: 3rem;
     }
     
     .info-grid {
         grid-template-columns: repeat(4, 1fr);
         max-width: 1400px;
-        gap: 3rem;
     }
     
     .info-card {
-        padding: 3rem 2.5rem;
+        padding: 3rem 2rem;
     }
     
     .info-icon {
-        font-size: 4.5rem;
+        font-size: 4rem;
     }
     
     .info-card h4 {
@@ -284,99 +293,24 @@
     }
     
     .info-card p {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 }
 
 /* Tablet (768px - 1024px) */
 @media (max-width: 1024px) {
     .info-section {
-        padding: 4rem 2rem;
+        padding: 0 2rem 4rem 2rem; /* Removed top padding */
     }
     
-    .info-section h3 {
+    .info-header h3 {
         font-size: 2.2rem;
     }
     
     .info-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-        max-width: 800px;
-    }
-    
-    .info-card {
-        padding: 2.5rem 2rem;
-    }
-    
-    .info-icon {
-        font-size: 3.5rem;
-    }
-    
-    .info-card h4 {
-        font-size: 1.4rem;
-    }
-    
-    .info-card p {
-        font-size: 1rem;
-    }
-}
-
-/* Mobile (480px - 767px) */
-@media (max-width: 767px) {
-    .info-section {
-        padding: 3rem 1.5rem;
-    }
-    
-    .info-section h3 {
-        font-size: 2rem;
-        letter-spacing: 1.5px;
-    }
-    
-    .info-grid {
-        grid-template-columns: 1fr;
         gap: 1.5rem;
-        max-width: 400px;
-    }
-    
-    .info-card {
-        padding: 2.5rem 2rem;
-    }
-    
-    .info-icon {
-        font-size: 3.5rem;
-    }
-    
-    .info-card h4 {
-        font-size: 1.4rem;
-    }
-    
-    .info-card p {
-        font-size: 1rem;
-    }
-    
-    .info-card:hover {
-        transform: translateY(-4px);
-    }
-}
-
-/* Small Mobile (480px and below) */
-@media (max-width: 480px) {
-    .info-section {
-        padding: 2.5rem 1rem;
-    }
-    
-    .info-section h3 {
-        font-size: 1.7rem;
-        letter-spacing: 1px;
-    }
-    
-    .info-section h3::after {
-        width: 80px;
-        bottom: -0.8rem;
-    }
-    
-    .info-grid {
-        gap: 1.2rem;
+        max-width: 800px;
     }
     
     .info-card {
@@ -390,21 +324,105 @@
     .info-card h4 {
         font-size: 1.3rem;
     }
+}
+
+/* Mobile (480px - 767px) */
+@media (max-width: 767px) {
+    .info-section {
+        padding: 0 1.5rem 3rem 1.5rem; /* Removed top padding */
+    }
+    
+    .info-header {
+        padding-top: 2rem; /* Reduced header padding for mobile */
+    }
+    
+    .info-header h3 {
+        font-size: 2rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 400px;
+    }
+    
+    .info-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .info-icon {
+        font-size: 2.8rem;
+    }
+    
+    .info-card h4 {
+        font-size: 1.3rem;
+    }
     
     .info-card p {
         font-size: 0.95rem;
+    }
+    
+    .info-card:hover {
+        transform: translateY(-4px);
+    }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+    .info-section {
+        padding: 0 1rem 2.5rem 1rem; /* Removed top padding */
+    }
+    
+    .info-header {
+        padding-top: 1.5rem; /* Further reduced header padding for small mobile */
+    }
+    
+    .info-header h3 {
+        font-size: 1.7rem;
+        letter-spacing: 1px;
+    }
+    
+    .info-header::after {
+        width: 80px;
+        bottom: -0.8rem;
+    }
+    
+    .info-grid {
+        gap: 1.2rem;
+    }
+    
+    .info-card {
+        padding: 1.8rem 1.2rem;
+    }
+    
+    .info-icon {
+        font-size: 2.5rem;
+    }
+    
+    .info-card h4 {
+        font-size: 1.2rem;
+    }
+    
+    .info-card p {
+        font-size: 0.9rem;
     }
 }
 
 /* Landscape Mode for Mobile */
 @media (max-height: 600px) and (orientation: landscape) {
     .info-section {
-        padding: 2rem 1.5rem;
+        padding: 0 1.5rem 2rem 1.5rem; /* Removed top padding */
     }
     
-    .info-section h3 {
-        font-size: 1.8rem;
+    .info-header {
         margin-bottom: 2rem;
+        padding-top: 1rem; /* Reduced header padding for landscape */
+    }
+    
+    .info-header h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
     }
     
     .info-grid {
@@ -417,16 +435,16 @@
     }
     
     .info-icon {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
         margin-bottom: 0.3rem;
     }
     
     .info-card h4 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     
     .info-card p {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 }
 
@@ -436,7 +454,7 @@
         animation: none;
     }
     
-    .info-section h3 {
+    .info-header h3 {
         animation: none;
     }
     
@@ -463,7 +481,7 @@
         border-bottom: 3px solid #000000;
     }
     
-    .info-section h3 {
+    .info-header h3 {
         background: linear-gradient(135deg, #000000 0%, #333333 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -491,8 +509,17 @@
     outline-offset: 3px;
 }
 
+/* Active state for better feedback */
+.info-card:active {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 20px rgba(232, 193, 0, 0.3),
+        0 4px 16px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
 /* Font optimization */
-.info-section h3,
+.info-header h3,
 .info-card h4,
 .info-card p {
     font-synthesis: none;
@@ -501,16 +528,36 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Additional decorative elements */
-.info-section::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, 
-        transparent, 
-        rgba(232, 193, 0, 0.3), 
-        transparent);
+/* Loading state for future enhancements */
+.info-card.loading {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+.info-card.loading:hover {
+    transform: none;
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 4px 16px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+/* Success state animation */
+@keyframes successPulse {
+    0%, 100% {
+        border-color: rgba(40, 167, 69, 0.3);
+        box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.1),
+            0 4px 16px rgba(0, 0, 0, 0.08);
+    }
+    50% {
+        border-color: rgba(40, 167, 69, 0.6);
+        box-shadow: 
+            0 8px 32px rgba(40, 167, 69, 0.3),
+            0 4px 16px rgba(40, 167, 69, 0.2);
+    }
+}
+
+.info-card.success {
+    animation: successPulse 2s ease-in-out;
 }
