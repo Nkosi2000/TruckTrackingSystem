@@ -1,16 +1,41 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Compiled output
+# ===== SECURITY CRITICAL =====
+# Environment variables and secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+
+# Firebase
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+.firebaserc
+
+# API Keys and service accounts
+*-credentials.json
+*service-account.json
+*private-key.json
+*.pem
+*.key
+*.cert
+
+# ===== COMPILED OUTPUT =====
 /dist
 /tmp
 /out-tsc
 /bazel-out
 
-# Node
+# ===== DEPENDENCIES =====
 /node_modules
 npm-debug.log
 yarn-error.log
+.yarn-integrity
 
+# ===== DEVELOPMENT TOOLS =====
 # IDEs and editors
 .idea/
 .project
@@ -28,7 +53,7 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# ===== RUNTIME DATA =====
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -38,6 +63,43 @@ testem.log
 /typings
 __screenshots__/
 
-# System files
+# Logs
+logs
+*.log
+
+# ===== SYSTEM FILES =====
 .DS_Store
 Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# ===== BUILD ARTIFACTS =====
+/build
+*.tsbuildinfo
+
+# ===== PACKAGE MANAGER SPECIFIC =====
+# npm
+package-lock.json
+npm-debug.log*
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# ===== TESTING =====
+/coverage/
+.nyc_output
+
+# ===== TEMPORARY FILES =====
+*.tmp
+*.temp
+tmp/
+temp/
